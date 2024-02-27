@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnetic Field</title>
+</head>
+<body>
+    <h1>Enter the parameters for plotting the magnetic field:</h1>
+    <form id="plotForm">
+        <label for="current1">Current 1 (in Amperes):</label><br>
+        <input type="text" id="current1" name="current1" value="1"><br>
+        <label for="x_position1">X position 1 (in meters):</label><br>
+        <input type="text" id="x_position1" name="x_position1" value="0"><br>
+        <label for="y_position1">Y position 1 (in meters):</label><br>
+        <input type="text" id="y_position1" name="y_position1" value="0"><br><br>
+
+        <label for="current2">Current 2 (in Amperes):</label><br>
+        <input type="text" id="current2" name="current2" value="1"><br>
+        <label for="x_position2">X position 2 (in meters):</label><br>
+        <input type="text" id="x_position2" name="x_position2" value="0"><br>
+        <label for="y_position2">Y position 2 (in meters):</label><br>
+        <input type="text" id="y_position2" name="y_position2" value="0"><br><br>
+
+        <input type="submit" value="Build a graph">
+    </form>
+
+    <div id="plotImage">
+    </div>
+
+    <script>
+        document.getElementById('plotForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(event.target);
+            fetch('/get_plot', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.blob())
+            .then(imageBlob => {
+                const imageUrl = URL.createObjectURL(imageBlob);
+                const plotImageDiv = document.getElementById('plotImage');
+                plotImageDiv.innerHTML = '<img src="' + imageUrl + '" alt="Magnetic Field Plot">';
+            });
+        });
+    </script>
+</body>
+</html>
