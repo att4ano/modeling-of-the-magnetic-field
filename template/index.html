@@ -8,20 +8,17 @@
 <body>
     <h1>Enter the parameters for plotting the magnetic field:</h1>
     <form id="plotForm">
-        <label for="current1">Current 1 (in Amperes):</label><br>
-        <input type="text" id="current1" name="current1" value="1"><br>
-        <label for="x_position1">X position 1 (in meters):</label><br>
-        <input type="text" id="x_position1" name="x_position1" value="0"><br>
-        <label for="y_position1">Y position 1 (in meters):</label><br>
-        <input type="text" id="y_position1" name="y_position1" value="0"><br><br>
-
-        <label for="current2">Current 2 (in Amperes):</label><br>
-        <input type="text" id="current2" name="current2" value="1"><br>
-        <label for="x_position2">X position 2 (in meters):</label><br>
-        <input type="text" id="x_position2" name="x_position2" value="0"><br>
-        <label for="y_position2">Y position 2 (in meters):</label><br>
-        <input type="text" id="y_position2" name="y_position2" value="0"><br><br>
-
+        <div id="inputFields">
+            <div class="inputSet" id="inputSet1">
+                <label for="current1">Current 1 (in Amperes):</label><br>
+                <input type="text" id="current1" name="current1" value="1"><br>
+                <label for="x_position1">X position 1 (in meters):</label><br>
+                <input type="text" id="x_position1" name="x_position1" value="0"><br>
+                <label for="y_position1">Y position 1 (in meters):</label><br>
+                <input type="text" id="y_position1" name="y_position1" value="0"><br><br>
+            </div>
+        </div>
+        <input type="button" value="Add Parameters" onclick="addInputFields()">
         <input type="submit" value="Build a graph">
     </form>
 
@@ -29,6 +26,27 @@
     </div>
 
     <script>
+        function addInputFields() {
+            var inputFields = document.getElementById('inputFields');
+            var numInputs = inputFields.getElementsByClassName('inputSet').length;
+            if (numInputs >= 5) {
+                alert('Maximum number of input fields reached (5)');
+                return;
+            }
+            var newInputSet = document.createElement('div');
+            newInputSet.classList.add('inputSet');
+            newInputSet.id = 'inputSet' + (numInputs + 1);
+            newInputSet.innerHTML = `
+                <label for="current${numInputs + 1}">Current ${numInputs + 1} (in Amperes):</label><br>
+                <input type="text" id="current${numInputs + 1}" name="current${numInputs + 1}" value="1"><br>
+                <label for="x_position${numInputs + 1}">X position ${numInputs + 1} (in meters):</label><br>
+                <input type="text" id="x_position${numInputs + 1}" name="x_position${numInputs + 1}" value="0"><br>
+                <label for="y_position${numInputs + 1}">Y position ${numInputs + 1} (in meters):</label><br>
+                <input type="text" id="y_position${numInputs + 1}" name="y_position${numInputs + 1}" value="0"><br><br>
+            `;
+            inputFields.appendChild(newInputSet);
+        }
+
         document.getElementById('plotForm').addEventListener('submit', function(event) {
             event.preventDefault();
             var formData = new FormData(event.target);
